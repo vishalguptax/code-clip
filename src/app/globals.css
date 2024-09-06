@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  @apply bg-gray-900 text-slate-200;
+}
+
+
+.mesh-gradient {
+  background: rgb(0, 0, 0);
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, rgba(136, 37, 62, 0.5), rgba(58, 97, 134, 0.5));
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, rgba(138, 38, 63, 0.5), rgba(58, 97, 134, 0.5));
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.glass-bg {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+input {
+  @apply bg-transparent border border-slate-500 rounded p-2 focus:border-slate-300 outline-none;
+}
