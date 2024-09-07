@@ -11,6 +11,7 @@ import { Sparkles } from "lucide-react";
 import { cn } from "@/utils/cn";
 import useKeyboardShortcut from "@/hooks/useKeyboardShortcut";
 import useSound from "use-sound";
+import { usePlayClick } from "@/hooks/usePlayClick";
 
 const createdSound = "/assets/sounds/created.mp3";
 
@@ -41,11 +42,13 @@ export const CodeForm = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [playCreated] = useSound(createdSound);
+  const playClick = usePlayClick();
 
   const router = useRouter();
 
   const handleDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDuration(parseInt(event.target.value, 10)); // Ensure numerical value
+    setDuration(parseInt(event.target.value, 10));
+    playClick();
   };
 
   const handleValueChange = (value: any) => {
@@ -85,7 +88,7 @@ export const CodeForm = () => {
     }
   };
 
-  useKeyboardShortcut("space", handleSubmit, "ctrl");
+  useKeyboardShortcut("s", handleSubmit, "ctrl");
 
   return (
     <div className="h-screen relative">

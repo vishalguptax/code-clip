@@ -8,6 +8,7 @@ import { ClipboardCheck, Copy, Sparkles } from "lucide-react";
 import useSound from "use-sound";
 import { useState } from "react";
 import useKeyboardShortcut from "@/hooks/useKeyboardShortcut";
+import { usePlayClick } from "@/hooks/usePlayClick";
 
 const copiedSound = "/assets/sounds/copied.mp3";
 
@@ -15,6 +16,8 @@ export const CodeViewer = ({ code }: { code: any }) => {
   const [copied, setCopied] = useState(false);
 
   const [playCopied] = useSound(copiedSound);
+
+  const playClick = usePlayClick();
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(code?.code);
@@ -48,7 +51,7 @@ export const CodeViewer = ({ code }: { code: any }) => {
             >
               {copied ? "Code Copied!" : "Copy Code"}
             </Button>
-            <Link href={`/`}>
+            <Link href={`/`} onClick={() => playClick()}>
               <Button
                 disabled={!code}
                 size="large"
