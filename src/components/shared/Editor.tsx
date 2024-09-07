@@ -12,17 +12,24 @@ export const CodeEditor = (props: EditorProps) => {
     });
   }, []);
 
+  // Handler to focus the editor when it mounts
+  const handleEditorDidMount = (editor: any, monaco: any) => {
+    editor.focus(); // Focus the editor on mount
+  };
+
   return (
     <Editor
       theme="gitHubDark"
       options={{
         fontSize: 16,
         fontLigatures: true,
-        // automaticLayout: true,
+        wordBasedSuggestionsOnlySameLanguage: true,
+        wordWrap: "wordWrapColumn",
         minimap: {
           enabled: false,
         },
       }}
+      onMount={handleEditorDidMount}
       {...props}
     />
   );

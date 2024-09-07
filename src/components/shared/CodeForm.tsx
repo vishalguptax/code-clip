@@ -5,10 +5,14 @@ import flourite from "flourite";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CodeEditor } from "./Editor";
-import { NeonGradientCard } from "./ui/NeonCard";
-import { Button } from "./ui/button";
+import { NeonGradientCard } from "../ui/NeonCard";
+import { Button } from "../ui/button";
 import { Sparkles } from "lucide-react";
 import { cn } from "@/utils/cn";
+import useKeyboardShortcut from "@/hooks/useKeyboardShortcut";
+import useSound from "use-sound";
+
+const createdSound = "/assets/sounds/created.mp3";
 
 const durationOptions = [
   {
@@ -36,6 +40,7 @@ export const CodeForm = () => {
   const [duration, setDuration] = useState<number>(600);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const [playCreated] = useSound(createdSound);
 
   const router = useRouter();
 
@@ -55,6 +60,10 @@ export const CodeForm = () => {
   };
 
   const handleSubmit = async () => {
+    if (!code) {
+      return;
+    }
+
     setIsLoading(true);
 
     const payload = {
@@ -67,6 +76,8 @@ export const CodeForm = () => {
     try {
       const { data } = await axios.post("/api/codes", payload);
       router.push(`/${data.id}`);
+      playCreated();
+      navigator.clipboard.writeText(`${window.location.origin}/${data.id}`);
     } catch (error) {
       console.log(error, "code-post-form.tsx", "25");
     } finally {
@@ -74,12 +85,12 @@ export const CodeForm = () => {
     }
   };
 
-  console.log({ lang });
+  useKeyboardShortcut("space", handleSubmit, "ctrl");
 
   return (
     <div className="h-screen relative">
       <CodeEditor onChange={handleValueChange} language={lang} />
-      <NeonGradientCard className="absolute top-6 right-10 w-max h-max">
+      <NeonGradientCard className="absolute top-6 right-10 w-max h-max max-w-xs lg:max-w-max">
         <div className="space-y-4">
           {/* <div className="flex space-x-4">
             <input
@@ -93,7 +104,7 @@ export const CodeForm = () => {
               onChange={(e) => setAuthor(e.target.value)}
             />
           </div> */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
             <p>Duration</p>
             {durationOptions.map((option) => (
               <label
@@ -119,7 +130,7 @@ export const CodeForm = () => {
             ))}
           </div>
 
-          <div className="justify-between flex items-center">
+          <div className="justify-between flex items-center flex-wrap">
             <p className="text-xs">
               Made with ❤️ by{" "}
               <a
@@ -138,7 +149,7 @@ export const CodeForm = () => {
               icon={<Sparkles size={16} />}
               loading={isLoading}
             >
-              Create Clip
+              {isLoading ? "Creating..." : "Create Clip"}
             </Button>
           </div>
         </div>

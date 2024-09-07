@@ -1,5 +1,4 @@
-import { CodeViewer } from "@/components/code-viewer";
-
+import { CodeViewer } from "@/components/shared/CodeViewer";
 import axios from "axios";
 import { redirect } from "next/navigation";
 

@@ -1,4 +1,4 @@
-import { CodeForm } from "@/components/code-post-form";
+import { CodeForm } from "@/components/shared/CodeForm";
 
 export default function Home() {
   return (
