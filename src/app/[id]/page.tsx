@@ -7,6 +7,7 @@ const getCode = async (id: string) => {
     const { data } = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/api/codes/${id}`
     );
+    console.log(data, "view page");
     return data;
   } catch (error) {
     return null;
@@ -16,7 +17,9 @@ const getCode = async (id: string) => {
 const Code = async ({ params }: { params: { id: string } }) => {
   const code = await getCode(params.id);
 
-  if (!code || !code.id || !code.code) {
+  console.log(code, "view page");
+
+  if (!code?.code) {
     redirect("/");
   }
 
