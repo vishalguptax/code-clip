@@ -38,7 +38,7 @@ export const CodeForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [lang, setLang] = useState("javascript");
   const [code, setCode] = useState("");
-  const [duration, setDuration] = useState<number>(600);
+  const [duration, setDuration] = useState<number>(3600);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [playCreated] = useSound(createdSound);
