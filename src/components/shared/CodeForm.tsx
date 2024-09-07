@@ -93,6 +93,11 @@ export const CodeForm = () => {
   return (
     <div className="h-screen relative">
       <CodeEditor onChange={handleValueChange} language={lang} />
+      {!code && (
+        <h4 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl italic text-center uppercase opacity-25 font-bold w-full select-none">
+          Paste or write your code
+        </h4>
+      )}
       <NeonGradientCard className="absolute top-6 right-10 w-max h-max max-w-xs lg:max-w-max">
         <div className="space-y-4">
           {/* <div className="flex space-x-4">

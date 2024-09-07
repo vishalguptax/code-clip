@@ -21,7 +21,7 @@ export const CodeEditor = (props: EditorProps) => {
   return (
     <Editor
       theme="gitHubDark"
-      defaultValue={defaultCodeSnippet}
+      // defaultValue={defaultCodeSnippet}
       options={{
         fontSize: 16,
         fontLigatures: true,
