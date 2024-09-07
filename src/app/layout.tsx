@@ -32,7 +32,13 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://codeclips.vercel.app/og-image.jpg", // replace with an actual image URL
+        url: "https://codeclips.vercel.app/og-image-square.jpg", // Add a square image optimized for WhatsApp
+        width: 600, // Ensure the image has a 1:1 ratio (square)
+        height: 600,
+        alt: "Code Clip - Share Code Snippets",
+      },
+      {
+        url: "https://codeclips.vercel.app/og-image.jpg", // Default larger image for platforms like Facebook and LinkedIn
         width: 1200,
         height: 630,
         alt: "Code Clip - Seamlessly Share Code Snippets",
@@ -49,7 +55,7 @@ export const metadata: Metadata = {
     creator: "@codeclip",
     images: [
       {
-        url: "https://codeclips.vercel.app/og-image.jpg", // replace with an actual image URL
+        url: "https://codeclips.vercel.app/og-image.jpg", // replace with an actual image URL optimized for Twitter
         alt: "Code Clip Twitter Card",
       },
     ],
