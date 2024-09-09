@@ -94,7 +94,7 @@ export const CodeForm = () => {
     <div className="h-screen relative">
       <CodeEditor onChange={handleValueChange} language={lang} />
       {!code && (
-        <h4 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 text-5xl italic text-center uppercase opacity-25 font-bold select-none">
+        <h4 className="absolute top-1/2 left-1/2 -translate-x-1/2 w-max -translate-y-1/2 text-4xl italic text-center uppercase opacity-25 font-bold select-none">
           Paste or write your code
         </h4>
       )}
