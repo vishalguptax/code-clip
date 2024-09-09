@@ -7,7 +7,7 @@ import { NeonGradientCard } from "../ui/NeonCard";
 import { ClipboardCheck, Copy, Sparkles } from "lucide-react";
 import useSound from "use-sound";
 import { useState } from "react";
-import useKeyboardShortcut from "@/hooks/useKeyboardShortcut";
+// import useKeyboardShortcut from "@/hooks/useKeyboardShortcut";
 import { usePlayClick } from "@/hooks/usePlayClick";
 
 const copiedSound = "/assets/sounds/copied.mp3";
@@ -28,7 +28,7 @@ export const CodeViewer = ({ code }: { code: any }) => {
     }, 3000);
   };
 
-  useKeyboardShortcut("c", handleCopyCode, "ctrl");
+  // useKeyboardShortcut("c", handleCopyCode, "ctrl");
 
   return (
     <div className="h-screen relative">

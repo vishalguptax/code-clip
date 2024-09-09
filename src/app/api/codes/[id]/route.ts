@@ -6,6 +6,14 @@ export const GET = async (
   req: Request,
   { params }: { params: { id: string } }
 ) => {
+  const origin = req.headers.get("origin");
+
+  const validSource = origin === process.env.NEXT_PUBLIC_API_URL;
+
+  if (!validSource) {
+    return NextResponse.json({ error: "Invalid source" }, { status: 401 });
+  }
+
   const id = params.id;
 
   try {
