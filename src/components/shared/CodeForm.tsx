@@ -117,32 +117,35 @@ export const CodeForm = ({}) => {
   return (
     <div className="h-screen relative">
       <Header>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center">
           <p>Duration</p>
-          {durationOptions.map((option) => (
-            <label
-              role="button"
-              key={option.value}
-              className={cn(
-                duration === option.value
-                  ? "border-blue-500 bg-black"
-                  : "border-slate-500",
-                "cursor-pointer border px-2.5 py-1 rounded text-xs hover:border-blue-500 transition"
-              )}
-            >
-              <input
-                type="radio"
-                className="hidden"
-                id={option.value.toString()}
-                name="duration"
-                value={option.value.toString()}
-                checked={duration === option.value}
-                disabled={isLoading}
-                onChange={handleDurationChange}
-              />
-              {option.label}
-            </label>
-          ))}
+          <div className="flex items-center sm:gap-2 gap-1 flex-wrap justify-center">
+            {durationOptions.map((option) => (
+              <label
+                role="button"
+                key={option.value}
+                className={cn(
+                  duration === option.value
+                    ? "border-blue-500 bg-black"
+                    : "border-slate-500",
+                  "cursor-pointer border px-2.5 py-1 rounded text-xs hover:border-blue-500 transition"
+                )}
+              >
+                <input
+                  type="radio"
+                  className="hidden"
+                  id={option.value.toString()}
+                  name="duration"
+                  value={option.value.toString()}
+                  checked={duration === option.value}
+                  disabled={isLoading}
+                  onChange={handleDurationChange}
+                />
+                {option.label}
+              </label>
+            ))}
+          </div>
+
           <RainbowButton
             onClick={handleSubmit}
             className="flex items-center gap-2"
