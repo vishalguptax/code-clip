@@ -44,7 +44,7 @@ export function CopyrightText() {
                 href="https://linkedin.com/in/vishalgupta26"
                 target="_blank"
                 rel="noreferrer"
-                className="underline text-red-300"
+                className="text-red-400 hover:underline-offset-1 hover:underline"
               >
                 Vishal
               </a>

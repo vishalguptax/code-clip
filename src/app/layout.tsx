@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { CopyrightText } from "@/components/shared/CopyrightText";
 import { cn } from "@/utils/cn";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -72,6 +73,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, "relative")}>
+        <Toaster position="bottom-center" />
         <main>{children}</main>
         <CopyrightText />
       </body>

@@ -2,18 +2,18 @@
 
 import axios from "axios";
 import flourite from "flourite";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CodeEditor } from "./Editor";
-import { NeonGradientCard } from "../ui/NeonCard";
-import { Button } from "../ui/button";
 import { Sparkles } from "lucide-react";
 import { cn } from "@/utils/cn";
 import useKeyboardShortcut from "@/hooks/useKeyboardShortcut";
 import useSound from "use-sound";
 import { usePlayClick } from "@/hooks/usePlayClick";
-import Logo from "./Logo";
 import { RainbowButton } from "../ui/RainbowButton";
+import Header from "../ui/Header";
+import { toast } from "sonner";
+import EditorPlaceholder from "./EditorPlaceholder";
 
 const createdSound = "/assets/sounds/created.mp3";
 
@@ -36,7 +36,10 @@ const durationOptions = [
   },
 ];
 
-export const CodeForm = () => {
+export const CodeForm = ({}) => {
+  const searchParams = useSearchParams();
+
+  const isError = searchParams.get("e") ?? null;
   const [isLoading, setIsLoading] = useState(false);
   const [lang, setLang] = useState("javascript");
   const [code, setCode] = useState("");
@@ -45,8 +48,17 @@ export const CodeForm = () => {
   const [author, setAuthor] = useState("");
   const [playCreated] = useSound(createdSound);
   const playClick = usePlayClick();
-
   const router = useRouter();
+
+  useEffect(() => {
+    if (isError === "404") {
+      router.replace("/");
+      toast.error("Oops! Code not found 🥲 ", {
+        description:
+          "The code clip you are looking for is either expired or doesn't exist!",
+      });
+    }
+  }, [isError, router]);
 
   const handleDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDuration(parseInt(event.target.value, 10));
@@ -65,7 +77,7 @@ export const CodeForm = () => {
   };
 
   const handleSubmit = async () => {
-    if (!code) {
+    if (!code || isLoading) {
       return;
     }
 
@@ -79,12 +91,22 @@ export const CodeForm = () => {
       expiresAt: new Date(Date.now() + duration * 1000),
     };
     try {
-      const { data } = await axios.post("/api/codes", payload);
+      const { data } = await axios.post("/api/codes", payload, {
+        headers: {
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+      });
       router.push(`/${data.id}`);
       playCreated();
       navigator.clipboard.writeText(`${window.location.origin}/${data.id}`);
+      toast.success("Clip Created! 🤩", {
+        description: "Code link copied to your clipboard 🔗",
+      });
     } catch (error) {
       console.log(error, "code-post-form.tsx", "25");
+      toast.error("Oops! Something went wrong 😥", {
+        description: "Please try creating again after sometime!",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -94,72 +116,48 @@ export const CodeForm = () => {
 
   return (
     <div className="h-screen relative">
-      <NeonGradientCard
-        className="w-full h-max"
-        borderRadius={0}
-        borderSize={1}
-      >
-        <div>
-          {/* <div className="flex space-x-4">
-            <input
-              placeholder="Code Title"
-              type="text"
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <input
-              placeholder="Your Name"
-              type="text"
-              onChange={(e) => setAuthor(e.target.value)}
-            />
-          </div> */}
-          <div className="flex items-center gap-4 justify-between">
-            <Logo />
-            <div className="flex items-center gap-4">
-              <p>Duration</p>
-              {durationOptions.map((option) => (
-                <label
-                  key={option.value}
-                  className={cn(
-                    duration === option.value
-                      ? "border-blue-500 bg-black"
-                      : "border-slate-500",
-                    "cursor-pointer border px-2.5 py-1 rounded text-xs hover:border-blue-500 transition"
-                  )}
-                >
-                  <input
-                    type="radio"
-                    className="hidden"
-                    id={option.value.toString()}
-                    name="duration"
-                    value={option.value.toString()}
-                    checked={duration === option.value}
-                    onChange={handleDurationChange}
-                  />
-                  {option.label}
-                </label>
-              ))}
-              <RainbowButton
-                disabled={!code || isLoading}
-                onClick={handleSubmit}
-                className="flex items-center gap-2"
-              >
-                {isLoading ? "Creating..." : "Create Clip"}{" "}
-                <Sparkles size={14} />
-              </RainbowButton>
-            </div>
-          </div>
+      <Header>
+        <div className="flex items-center gap-4">
+          <p>Duration</p>
+          {durationOptions.map((option) => (
+            <label
+              role="button"
+              key={option.value}
+              className={cn(
+                duration === option.value
+                  ? "border-blue-500 bg-black"
+                  : "border-slate-500",
+                "cursor-pointer border px-2.5 py-1 rounded text-xs hover:border-blue-500 transition"
+              )}
+            >
+              <input
+                type="radio"
+                className="hidden"
+                id={option.value.toString()}
+                name="duration"
+                value={option.value.toString()}
+                checked={duration === option.value}
+                disabled={isLoading}
+                onChange={handleDurationChange}
+              />
+              {option.label}
+            </label>
+          ))}
+          <RainbowButton
+            onClick={handleSubmit}
+            className="flex items-center gap-2"
+          >
+            {isLoading ? "Creating..." : "Create Clip"}{" "}
+            <Sparkles size={14} className={isLoading ? "animate-spin" : ""} />
+          </RainbowButton>
         </div>
-      </NeonGradientCard>
+      </Header>
       <CodeEditor
         className="pt-4"
         onChange={handleValueChange}
         language={lang}
       />
-      {!code && (
-        <h4 className="absolute top-1/2 left-1/2 -translate-x-1/2 w-max -translate-y-1/2 text-4xl italic text-center uppercase opacity-25 font-bold select-none">
-          Paste or write your code
-        </h4>
-      )}
+      {!code && <EditorPlaceholder />}
     </div>
   );
 };
