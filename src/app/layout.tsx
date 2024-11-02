@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { CopyrightText } from "@/components/shared/CopyrightText";
+import { cn } from "@/utils/cn";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -69,8 +71,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(inter.className, "relative")}>
         <main>{children}</main>
+        <CopyrightText />
       </body>
     </html>
   );

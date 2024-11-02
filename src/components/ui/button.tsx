@@ -34,7 +34,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       className={cn(
         className,
-        sizeStyles[size], // Apply size classes dynamically
+        // Apply size classes dynamically
         "bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px font-semibold leading-6 inline-block"
       )}
       disabled={loading} // Disable button when loading
@@ -43,7 +43,12 @@ export const Button: React.FC<ButtonProps> = ({
       <span className="absolute inset-0 overflow-hidden rounded-full">
         <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       </span>
-      <div className="relative flex space-x-2 items-center z-10 rounded-full bg-slate-950 py-1.5 px-4 ring-1 ring-white/10 w-full justify-center">
+      <div
+        className={cn(
+          sizeStyles[size],
+          "relative flex space-x-2 items-center z-10 rounded-full bg-slate-950 ring-1 ring-white/10 w-full justify-center"
+        )}
+      >
         <span>{children}</span>
         {(icon || loading) && (
           <span className="ml-2">

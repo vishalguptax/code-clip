@@ -17,8 +17,6 @@ const getCode = async (id: string) => {
 const Code = async ({ params }: { params: { id: string } }) => {
   const code = await getCode(params.id);
 
-  console.log(code, "view page");
-
   if (!code?.code) {
     redirect("/");
   }

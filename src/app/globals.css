@@ -2,9 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-1: 0 100% 63%;
+  --color-2: 270 100% 63%;
+  --color-3: 210 100% 63%;
+  --color-4: 195 100% 63%;
+  --color-5: 90 100% 63%;
+}
 
 body {
-  @apply bg-gray-900 text-slate-200;
+  @apply bg-gray-900 text-slate-200 text-sm overflow-hidden;
 }
 
 

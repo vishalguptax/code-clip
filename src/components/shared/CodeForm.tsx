@@ -12,6 +12,8 @@ import { cn } from "@/utils/cn";
 import useKeyboardShortcut from "@/hooks/useKeyboardShortcut";
 import useSound from "use-sound";
 import { usePlayClick } from "@/hooks/usePlayClick";
+import Logo from "./Logo";
+import { RainbowButton } from "../ui/RainbowButton";
 
 const createdSound = "/assets/sounds/created.mp3";
 
@@ -92,14 +94,12 @@ export const CodeForm = () => {
 
   return (
     <div className="h-screen relative">
-      <CodeEditor onChange={handleValueChange} language={lang} />
-      {!code && (
-        <h4 className="absolute top-1/2 left-1/2 -translate-x-1/2 w-max -translate-y-1/2 text-4xl italic text-center uppercase opacity-25 font-bold select-none">
-          Paste or write your code
-        </h4>
-      )}
-      <NeonGradientCard className="absolute top-6 right-10 w-max h-max max-w-xs lg:max-w-max">
-        <div className="space-y-4">
+      <NeonGradientCard
+        className="w-full h-max"
+        borderRadius={0}
+        borderSize={1}
+      >
+        <div>
           {/* <div className="flex space-x-4">
             <input
               placeholder="Code Title"
@@ -112,56 +112,54 @@ export const CodeForm = () => {
               onChange={(e) => setAuthor(e.target.value)}
             />
           </div> */}
-          <div className="flex items-center gap-4 flex-wrap">
-            <p>Duration</p>
-            {durationOptions.map((option) => (
-              <label
-                key={option.value}
-                className={cn(
-                  duration === option.value
-                    ? "border-blue-500 bg-black"
-                    : "border-slate-500",
-                  "cursor-pointer border px-3 py-1 rounded text-sm hover:border-blue-500 transition"
-                )}
+          <div className="flex items-center gap-4 justify-between">
+            <Logo />
+            <div className="flex items-center gap-4">
+              <p>Duration</p>
+              {durationOptions.map((option) => (
+                <label
+                  key={option.value}
+                  className={cn(
+                    duration === option.value
+                      ? "border-blue-500 bg-black"
+                      : "border-slate-500",
+                    "cursor-pointer border px-2.5 py-1 rounded text-xs hover:border-blue-500 transition"
+                  )}
+                >
+                  <input
+                    type="radio"
+                    className="hidden"
+                    id={option.value.toString()}
+                    name="duration"
+                    value={option.value.toString()}
+                    checked={duration === option.value}
+                    onChange={handleDurationChange}
+                  />
+                  {option.label}
+                </label>
+              ))}
+              <RainbowButton
+                disabled={!code || isLoading}
+                onClick={handleSubmit}
+                className="flex items-center gap-2"
               >
-                <input
-                  type="radio"
-                  className="hidden"
-                  id={option.value.toString()}
-                  name="duration"
-                  value={option.value.toString()}
-                  checked={duration === option.value}
-                  onChange={handleDurationChange}
-                />
-                {option.label}
-              </label>
-            ))}
-          </div>
-
-          <div className="justify-between flex items-center flex-wrap">
-            <p className="text-xs">
-              Made with ❤️ by{" "}
-              <a
-                href="https://linkedin.com/in/vishalgupta26"
-                target="_blank"
-                rel="noreferrer"
-                className="underline"
-              >
-                Vishal
-              </a>
-            </p>
-            <Button
-              disabled={!code}
-              onClick={handleSubmit}
-              size="large"
-              icon={<Sparkles size={16} />}
-              loading={isLoading}
-            >
-              {isLoading ? "Creating..." : "Create Clip"}
-            </Button>
+                {isLoading ? "Creating..." : "Create Clip"}{" "}
+                <Sparkles size={14} />
+              </RainbowButton>
+            </div>
           </div>
         </div>
       </NeonGradientCard>
+      <CodeEditor
+        className="pt-4"
+        onChange={handleValueChange}
+        language={lang}
+      />
+      {!code && (
+        <h4 className="absolute top-1/2 left-1/2 -translate-x-1/2 w-max -translate-y-1/2 text-4xl italic text-center uppercase opacity-25 font-bold select-none">
+          Paste or write your code
+        </h4>
+      )}
     </div>
   );
 };
