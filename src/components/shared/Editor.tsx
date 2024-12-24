@@ -3,7 +3,6 @@
 import { Editor, loader, EditorProps } from "@monaco-editor/react";
 import { useEffect } from "react";
 import gitHubDark from "@/constants/theme.json";
-import { defaultCodeSnippet } from "@/assets/defaultCode";
 
 export const CodeEditor = (props: EditorProps) => {
   useEffect(() => {
@@ -13,22 +12,20 @@ export const CodeEditor = (props: EditorProps) => {
     });
   }, []);
 
-  // Handler to focus the editor when it mounts
   const handleEditorDidMount = (editor: any, monaco: any) => {
-    editor.focus(); // Focus the editor on mount
+    editor.focus();
   };
 
   return (
     <Editor
       theme="gitHubDark"
-      // defaultValue={defaultCodeSnippet}
       options={{
         fontSize: 16,
         fontLigatures: true,
         wordBasedSuggestionsOnlySameLanguage: true,
-        wordWrap: "wordWrapColumn",
+        wordWrap: "on",
         minimap: {
-          enabled: false,
+          enabled: true,
         },
       }}
       onMount={handleEditorDidMount}

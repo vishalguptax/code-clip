@@ -6,12 +6,6 @@ export const GET = async (
   req: Request,
   { params }: { params: { id: string } }
 ) => {
-  const apiKey = req.headers.get("x-api-key");
-
-  if (apiKey !== process.env.NEXT_PUBLIC_API_KEY) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const id = params.id;
 
   try {

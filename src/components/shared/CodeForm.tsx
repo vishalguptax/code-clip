@@ -38,7 +38,6 @@ const durationOptions = [
 
 export const CodeForm = ({}) => {
   const searchParams = useSearchParams();
-
   const isError = searchParams.get("e") ?? null;
   const [isLoading, setIsLoading] = useState(false);
   const [lang, setLang] = useState("javascript");
@@ -49,7 +48,6 @@ export const CodeForm = ({}) => {
   const [playCreated] = useSound(createdSound);
   const playClick = usePlayClick();
   const router = useRouter();
-
   useEffect(() => {
     if (isError === "404") {
       router.replace("/");
@@ -117,42 +115,53 @@ export const CodeForm = ({}) => {
   return (
     <div className="h-screen relative">
       <Header>
-        <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center">
-          <p>Duration</p>
-          <div className="flex items-center sm:gap-2 gap-1 flex-wrap justify-center">
-            {durationOptions.map((option) => (
-              <label
-                role="button"
-                key={option.value}
-                className={cn(
-                  duration === option.value
-                    ? "border-blue-500 bg-black"
-                    : "border-slate-500",
-                  "cursor-pointer border px-2.5 py-1 rounded text-xs hover:border-blue-500 transition"
-                )}
-              >
-                <input
-                  type="radio"
-                  className="hidden"
-                  id={option.value.toString()}
-                  name="duration"
-                  value={option.value.toString()}
-                  checked={duration === option.value}
-                  disabled={isLoading}
-                  onChange={handleDurationChange}
-                />
-                {option.label}
-              </label>
-            ))}
+        <div className="flex items-center gap-2 sm:gap-4 justify-between flex-col lg:flex-row justify-self-end w-full">
+          <div className="border border-slate-700 bg-slate-950/30 py-1.5 px-4 flex flex-1 justify-center items-center gap-2 w-full text-center rounded-full">
+            <input
+              type="text"
+              value={title}
+              placeholder="Enter Code Title"
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full outline-none bg-transparent text-center border-none p-0 line-clamp-1"
+            />
           </div>
 
-          <RainbowButton
-            onClick={handleSubmit}
-            className="flex items-center gap-2"
-          >
-            {isLoading ? "Creating..." : "Create Clip"}{" "}
-            <Sparkles size={14} className={isLoading ? "animate-spin" : ""} />
-          </RainbowButton>
+          <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center">
+            <div className="flex items-center sm:gap-2 gap-1 flex-wrap justify-center">
+              {durationOptions.map((option) => (
+                <label
+                  role="button"
+                  key={option.value}
+                  className={cn(
+                    duration === option.value
+                      ? "border-blue-500 bg-black"
+                      : "border-slate-500",
+                    "cursor-pointer border px-2.5 py-1 rounded text-xs hover:border-blue-500 transition"
+                  )}
+                >
+                  <input
+                    type="radio"
+                    className="hidden"
+                    id={option.value.toString()}
+                    name="duration"
+                    value={option.value.toString()}
+                    checked={duration === option.value}
+                    disabled={isLoading}
+                    onChange={handleDurationChange}
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
+
+            <RainbowButton
+              onClick={handleSubmit}
+              className="flex items-center gap-2"
+            >
+              {isLoading ? "Creating..." : "Create Clip"}{" "}
+              <Sparkles size={14} className={isLoading ? "animate-spin" : ""} />
+            </RainbowButton>
+          </div>
         </div>
       </Header>
       <CodeEditor

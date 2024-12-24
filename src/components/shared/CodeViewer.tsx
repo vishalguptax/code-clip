@@ -8,6 +8,7 @@ import { useState } from "react";
 import { usePlayClick } from "@/hooks/usePlayClick";
 import { RainbowButton } from "../ui/RainbowButton";
 import Header from "../ui/Header";
+import Countdown from "./Countdown";
 
 const copiedSound = "/assets/sounds/copied.mp3";
 
@@ -15,6 +16,8 @@ export const CodeViewer = ({ code }: { code: any }) => {
   const [copied, setCopied] = useState(false);
   const [playCopied] = useSound(copiedSound);
   const playClick = usePlayClick();
+
+  console.log(code);
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(code?.code);
@@ -26,17 +29,18 @@ export const CodeViewer = ({ code }: { code: any }) => {
   return (
     <div className="h-screen relative">
       <Header>
-        <div className="space-y-4">
-          {(code?.title || code?.author) && (
-            <div className="flex items-center gap-4">
-              {code?.title && (
-                <h1 className="text-lg font-bold">{code.title}</h1>
-              )}
-              {code?.author && (
-                <p className="text-xs italic">by {code.author}</p>
-              )}
-            </div>
-          )}
+        <div className="flex items-center gap-2 sm:gap-4 justify-between flex-col lg:flex-row justify-self-end w-full">
+          <div className="border border-slate-700 bg-slate-950/30 py-1.5 px-4 flex flex-1 justify-center items-center gap-2 w-full text-center rounded-full">
+            <input
+              type="text"
+              value={
+                code?.title || "Untitled Clip | Explore and Share Code Snippets"
+              }
+              placeholder="Enter Code Title"
+              readOnly
+              className="w-full outline-none bg-transparent text-center border-none p-0 line-clamp-1"
+            />
+          </div>
           <div className="flex items-center gap-4">
             <RainbowButton
               onClick={handleCopyCode}
@@ -62,6 +66,7 @@ export const CodeViewer = ({ code }: { code: any }) => {
         language={code?.language}
         value={code?.code}
       />
+      <Countdown expiresAt={code?.expiresAt} />
     </div>
   );
 };

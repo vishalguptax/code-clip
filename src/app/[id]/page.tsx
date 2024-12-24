@@ -1,7 +1,7 @@
 import axios from "axios";
+import { Metadata } from "next";
 import { CodeViewer } from "@/components/shared/CodeViewer";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
 
 const getCode = async (id: string) => {
   try {
@@ -18,6 +18,41 @@ const getCode = async (id: string) => {
     return null;
   }
 };
+
+// Dynamically generate metadata for the page
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const code = await getCode(params.id);
+
+  // Default app description from layout
+  const defaultDescription =
+    "Unlock the power of seamless code sharing with Code Clips. Create, and share your code in real time with developers around the world.";
+
+  // Construct the metadata
+  return {
+    title: code?.title
+      ? `${code.title} | Explore and Share Code Snippets - Code Clips`
+      : "Code Clips | Explore and Share Code Snippets",
+    description: defaultDescription, // Use the default app description
+    openGraph: {
+      title: code?.title
+        ? `${code.title} | Explore and Share Code Snippets - Code Clips`
+        : "Code Clips | Explore and Share Code Snippets",
+      description: defaultDescription,
+      url: `https://codeclips.vercel.app/code/${params.id}`, // Update with your app's base URL
+      type: "website",
+    },
+    twitter: {
+      title: code?.title
+        ? `${code.title} | Explore and Share Code Snippets - Code Clips`
+        : "Code Clips | Explore and Share Code Snippets",
+      description: defaultDescription,
+    },
+  };
+}
 
 const Code = async ({ params }: { params: { id: string } }) => {
   const code = await getCode(params.id);
