@@ -34,6 +34,14 @@ const durationOptions = [
     label: "1 Week",
     value: 604800,
   },
+  {
+    label: "1 Month",
+    value: 2592000,
+  },
+  {
+    label: "1 Year",
+    value: 31536000,
+  },
 ];
 
 export const CodeForm = ({}) => {
@@ -76,6 +84,9 @@ export const CodeForm = ({}) => {
 
   const handleSubmit = async () => {
     if (!code || isLoading) {
+      toast.error("Please enter some code before creating a clip! 🥲", {
+        description: "Code cannot be empty!",
+      });
       return;
     }
 
